@@ -13,9 +13,73 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "GitSchema — Visualize Any GitHub Repository",
+  metadataBase: new URL("https://gitschema.up.railway.app"),
+  title: {
+    default: "GitSchema — Visualize Any GitHub Repository",
+    template: "%s | GitSchema",
+  },
   description:
-    "Paste a GitHub URL and get an interactive visual map of the repository architecture, file dependencies, and API flow.",
+    "Paste a GitHub URL and get an interactive visual map of the repository architecture, file dependencies, and API flow. The fastest way to understand any codebase.",
+  keywords: [
+    "GitSchema",
+    "Gitschema",
+    "GitHub visualizer",
+    "repository architecture diagram",
+    "codebase map",
+    "file dependencies visualizer",
+    "API flow visualization",
+    "visualize github repo",
+    "understand codebase",
+  ],
+  authors: [{ name: "GitSchema" }],
+  creator: "GitSchema",
+  publisher: "GitSchema",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  openGraph: {
+    title: "GitSchema — Visualize Any GitHub Repository",
+    description:
+      "Paste a GitHub URL and get an interactive visual map of the repository architecture, file dependencies, and API flow.",
+    url: "https://gitschema.up.railway.app",
+    siteName: "GitSchema",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "GitSchema — Visualize Any GitHub Repository",
+    description:
+      "Paste a GitHub URL and get an interactive visual map of the repository architecture, file dependencies, and API flow.",
+    creator: "@gitschema",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://gitschema.up.railway.app",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/favicon/site.webmanifest",
 };
 
 export default function RootLayout({
