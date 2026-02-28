@@ -19,6 +19,9 @@ import {
     ChevronRight,
     ChevronDown,
     ArrowLeft,
+    Menu,
+    X,
+    FileText,
 } from "lucide-react";
 import type { Node, Edge } from "@xyflow/react";
 import ArchitectureMap from "./architecture-map";
@@ -79,6 +82,8 @@ export default function Dashboard({
     const [previousFile, setPreviousFile] = useState<string | null>(null);
     const [expandedFolders, setExpandedFolders] = useState<Set<string>>(new Set());
     const [activeTab, setActiveTab] = useState("architecture");
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [filePanelOpen, setFilePanelOpen] = useState(false);
 
     // Build file tree from nodes
     const fileTree = buildFileTree(nodes);
@@ -89,6 +94,8 @@ export default function Dashboard({
             if (node && node.data?.type !== "folder") {
                 setPreviousFile(selectedFile);
                 setSelectedFile(nodeId);
+                setFilePanelOpen(true);
+                setSidebarOpen(false);
             }
         },
         [nodes, selectedFile]
@@ -117,23 +124,32 @@ export default function Dashboard({
     return (
         <div className="flex flex-col h-screen">
             {/* Top Bar */}
-            <header className="h-14 border-b border-border bg-card/50 backdrop-blur-md flex items-center px-4 gap-4 shrink-0">
+            <header className="h-14 border-b border-border bg-card/50 backdrop-blur-md flex items-center px-3 sm:px-4 gap-2 sm:gap-4 shrink-0">
+                {/* Mobile hamburger */}
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    className="h-8 w-8 md:hidden"
+                >
+                    <Menu className="w-4 h-4" />
+                </Button>
                 <Button variant="ghost" size="icon" onClick={onBack} className="h-8 w-8">
                     <ArrowLeft className="w-4 h-4" />
                 </Button>
-                <Separator orientation="vertical" className="h-6" />
+                <Separator orientation="vertical" className="h-6 hidden sm:block" />
 
-                <div className="flex items-center gap-3 min-w-0">
-                    <h1 className="text-sm font-semibold truncate">{meta.fullName}</h1>
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                    <h1 className="text-xs sm:text-sm font-semibold truncate">{meta.fullName}</h1>
                     {meta.language && (
-                        <Badge variant="secondary" className="text-xs shrink-0">
+                        <Badge variant="secondary" className="text-xs shrink-0 hidden sm:flex">
                             <Code2 className="w-3 h-3 mr-1" />
                             {meta.language}
                         </Badge>
                     )}
                 </div>
 
-                <div className="flex items-center gap-3 ml-auto text-xs text-muted-foreground shrink-0">
+                <div className="hidden md:flex items-center gap-3 ml-auto text-xs text-muted-foreground shrink-0">
                     <span className="flex items-center gap-1">
                         <Star className="w-3.5 h-3.5 text-yellow-500" />
                         {meta.stars.toLocaleString()}
@@ -147,17 +163,42 @@ export default function Dashboard({
                     <span>{stats.apiEndpoints} APIs</span>
                 </div>
 
-                {/* Deep Dive */}
-                <DeepDive fileA={previousFileData} fileB={selectedFileData} />
+                <div className="ml-auto md:ml-0 flex items-center gap-1">
+                    {/* Deep Dive */}
+                    <DeepDive fileA={previousFileData} fileB={selectedFileData} />
+                </div>
             </header>
 
-            <div className="flex flex-1 overflow-hidden">
+            <div className="flex flex-1 overflow-hidden relative">
+                {/* Mobile sidebar overlay backdrop */}
+                {sidebarOpen && (
+                    <div
+                        className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden"
+                        onClick={() => setSidebarOpen(false)}
+                    />
+                )}
+
                 {/* Left sidebar — File Tree */}
-                <aside className="w-60 border-r border-border bg-card/30 flex flex-col shrink-0">
-                    <div className="p-3 border-b border-border">
+                <aside
+                    className={`
+                        fixed inset-y-0 left-0 z-40 w-64 border-r border-border bg-card/95 backdrop-blur-md flex flex-col
+                        transform transition-transform duration-300 ease-in-out
+                        md:static md:w-60 md:translate-x-0 md:shrink-0 md:bg-card/30 md:backdrop-blur-none
+                        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+                    `}
+                >
+                    <div className="p-3 border-b border-border flex items-center justify-between">
                         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                             File Explorer
                         </h2>
+                        <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setSidebarOpen(false)}
+                            className="h-6 w-6 md:hidden"
+                        >
+                            <X className="w-3.5 h-3.5" />
+                        </Button>
                     </div>
                     <ScrollArea className="flex-1">
                         <div className="p-2">
@@ -194,28 +235,30 @@ export default function Dashboard({
                 {/* Center — Visualization */}
                 <main className="flex-1 flex flex-col overflow-hidden">
                     <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col flex-1">
-                        <div className="border-b border-border px-4 bg-card/20">
+                        <div className="border-b border-border px-2 sm:px-4 bg-card/20 overflow-x-auto">
                             <TabsList className="h-10 bg-transparent gap-1">
                                 <TabsTrigger
                                     value="architecture"
                                     className="data-[state=active]:bg-[oklch(0.82_0.16_195/0.1)] data-[state=active]:text-[oklch(0.82_0.16_195)] gap-1.5 text-xs"
                                 >
                                     <Network className="w-3.5 h-3.5" />
-                                    Architecture Map
+                                    <span className="hidden sm:inline">Architecture</span>
+                                    <span className="sm:hidden">Arch</span>
                                 </TabsTrigger>
                                 <TabsTrigger
                                     value="logic"
                                     className="data-[state=active]:bg-[oklch(0.65_0.25_300/0.1)] data-[state=active]:text-[oklch(0.65_0.25_300)] gap-1.5 text-xs"
                                 >
                                     <GitBranch className="w-3.5 h-3.5" />
-                                    Logic Flow
+                                    <span className="hidden sm:inline">Logic Flow</span>
+                                    <span className="sm:hidden">Logic</span>
                                 </TabsTrigger>
                                 <TabsTrigger
                                     value="schema"
                                     className="data-[state=active]:bg-[oklch(0.75_0.2_155/0.1)] data-[state=active]:text-[oklch(0.75_0.2_155)] gap-1.5 text-xs"
                                 >
                                     <Database className="w-3.5 h-3.5" />
-                                    Schema View
+                                    Schema
                                 </TabsTrigger>
                             </TabsList>
                         </div>
@@ -241,7 +284,7 @@ export default function Dashboard({
                     </Tabs>
                 </main>
 
-                {/* Right sidebar — File details */}
+                {/* Right sidebar — File details (desktop) */}
                 {selectedFile && selectedFileContent && (
                     <aside className="hidden lg:block w-96 shrink-0 overflow-hidden transition-all duration-300">
                         <FileSidebar
@@ -251,6 +294,38 @@ export default function Dashboard({
                             onClose={() => setSelectedFile(null)}
                         />
                     </aside>
+                )}
+
+                {/* Mobile file panel — slide-over */}
+                {selectedFile && selectedFileContent && filePanelOpen && (
+                    <>
+                        <div
+                            className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+                            onClick={() => setFilePanelOpen(false)}
+                        />
+                        <aside className="fixed inset-y-0 right-0 z-50 w-[85vw] max-w-md lg:hidden transform transition-transform duration-300 ease-in-out">
+                            <FileSidebar
+                                filePath={selectedFile}
+                                fileContent={selectedFileContent}
+                                repoUrl={repoUrl}
+                                onClose={() => {
+                                    setFilePanelOpen(false);
+                                    setSelectedFile(null);
+                                }}
+                            />
+                        </aside>
+                    </>
+                )}
+
+                {/* Mobile floating "View file" button */}
+                {selectedFile && selectedFileContent && !filePanelOpen && (
+                    <button
+                        onClick={() => setFilePanelOpen(true)}
+                        className="fixed bottom-4 right-4 z-30 lg:hidden flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-[oklch(0.82_0.16_195)] to-[oklch(0.65_0.25_300)] text-[oklch(0.1_0.02_260)] text-sm font-semibold shadow-lg shadow-[oklch(0.82_0.16_195/0.3)] hover:opacity-90 transition-all"
+                    >
+                        <FileText className="w-4 h-4" />
+                        View File
+                    </button>
                 )}
             </div>
         </div>

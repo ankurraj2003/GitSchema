@@ -97,7 +97,7 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Nav */}
-      <nav className="h-14 border-b border-border/50 flex items-center px-6 backdrop-blur-md bg-background/30">
+      <nav className="h-14 border-b border-border/50 flex items-center px-4 sm:px-6 backdrop-blur-md bg-background/30">
         <div className="flex items-center gap-2.5">
           <Image src="/icon.png" alt="GitSchema" width={28} height={28} className="object-contain" />
           <span className="font-bold text-lg tracking-tight">
@@ -117,12 +117,12 @@ export default function Home() {
       </nav>
 
       {/* Hero */}
-      <main className="flex-1 flex flex-col items-center justify-center px-6 pb-20">
-        <div className="text-center max-w-3xl mx-auto space-y-6 animate-fade-in-up">
+      <main className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 pb-12 sm:pb-20">
+        <div className="text-center max-w-3xl mx-auto space-y-4 sm:space-y-6 animate-fade-in-up">
 
 
           {/* Title */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+          <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
             See Your Code
             <br />
             <span className="bg-gradient-to-r from-[oklch(0.82_0.16_195)] via-[oklch(0.7_0.2_240)] to-[oklch(0.65_0.25_300)] bg-clip-text text-transparent">
@@ -131,7 +131,7 @@ export default function Home() {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
             Paste any public GitHub repository URL and instantly visualize its architecture,
             file dependencies, and API flow in an interactive map.
           </p>

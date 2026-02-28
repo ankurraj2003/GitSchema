@@ -167,7 +167,7 @@ export default function ArchitectureMap({
     return (
         <div className="w-full h-full relative">
             {/* View controls */}
-            <div className="absolute top-3 left-3 z-10 flex gap-2">
+            <div className="absolute top-3 left-3 z-10 flex flex-col sm:flex-row gap-2">
                 <button
                     onClick={() => setViewMode(viewMode === "architecture" ? "all" : "architecture")}
                     className={`
@@ -194,13 +194,13 @@ export default function ArchitectureMap({
                     {showFolders ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
                     Folders
                 </button>
-                <div className="flex items-center gap-1 px-2 py-1.5 rounded-md bg-[oklch(0.12_0.015_260/0.8)] border border-[oklch(0.22_0.025_260)] text-[10px] text-[oklch(0.5_0.01_260)]">
+                <div className="hidden sm:flex items-center gap-1 px-2 py-1.5 rounded-md bg-[oklch(0.12_0.015_260/0.8)] border border-[oklch(0.22_0.025_260)] text-[10px] text-[oklch(0.5_0.01_260)]">
                     {displayNodes.length} nodes · {displayEdges.length} edges
                 </div>
             </div>
 
             {/* Legend */}
-            <div className="absolute bottom-14 left-3 z-10 flex flex-wrap gap-x-3 gap-y-1 px-3 py-2 rounded-md bg-[oklch(0.1_0.015_260/0.9)] border border-[oklch(0.22_0.025_260)] text-[10px] text-[oklch(0.6_0.01_260)]">
+            <div className="absolute bottom-14 left-3 z-10 hidden sm:flex flex-wrap gap-x-3 gap-y-1 px-3 py-2 rounded-md bg-[oklch(0.1_0.015_260/0.9)] border border-[oklch(0.22_0.025_260)] text-[10px] text-[oklch(0.6_0.01_260)]">
                 <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#22c55e]" />Entry</span>
                 <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#a855f7]" />API</span>
                 <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-[#3b82f6]" />Controller</span>

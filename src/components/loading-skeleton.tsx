@@ -6,8 +6,8 @@ import { Card } from "@/components/ui/card";
 export default function LoadingSkeleton() {
     return (
         <div className="flex h-[calc(100vh-4rem)] animate-fade-in-up">
-            {/* Left sidebar skeleton */}
-            <div className="w-64 border-r border-border p-4 space-y-3">
+            {/* Left sidebar skeleton — hidden on mobile */}
+            <div className="hidden md:block w-64 border-r border-border p-4 space-y-3">
                 <Skeleton className="h-6 w-32" />
                 <Skeleton className="h-4 w-full" />
                 <Skeleton className="h-4 w-3/4" />
@@ -22,7 +22,7 @@ export default function LoadingSkeleton() {
             </div>
 
             {/* Center canvas skeleton */}
-            <div className="flex-1 p-6">
+            <div className="flex-1 p-3 sm:p-6">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex gap-2">
                         <Skeleton className="h-9 w-32 rounded-lg" />
