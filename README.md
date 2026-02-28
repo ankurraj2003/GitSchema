@@ -1,4 +1,4 @@
-<img width="2145" height="1133" alt="image" src="https://github.com/user-attachments/assets/46d68a91-d51e-4836-b344-8d56a9b0e995" /># GitSchema
+# GitSchema
 
 A modern web application for visualizing and managing Git repository schemas with interactive graph visualization and GitHub integration.
 
