@@ -6,6 +6,7 @@ import Dashboard from "@/components/dashboard";
 import LoadingSkeleton from "@/components/loading-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Eye, Network, Sparkles, Zap, Github } from "lucide-react";
+import Image from "next/image";
 
 interface RepoData {
   meta: {
@@ -98,14 +99,14 @@ export default function Home() {
       {/* Nav */}
       <nav className="h-14 border-b border-border/50 flex items-center px-6 backdrop-blur-md bg-background/30">
         <div className="flex items-center gap-2.5">
-
+          <Image src="/icon.png" alt="GitSchema" width={28} height={28} className="object-contain" />
           <span className="font-bold text-lg tracking-tight">
             Git<span className="text-[oklch(0.82_0.16_195)]">Schema</span>
           </span>
         </div>
         <div className="ml-auto flex items-center gap-3">
           <a
-            href="https://github.com"
+            href="https://github.com/ankurraj2003/GitSchema"
             target="_blank"
             rel="noopener noreferrer"
             className="text-muted-foreground hover:text-foreground transition-colors"
