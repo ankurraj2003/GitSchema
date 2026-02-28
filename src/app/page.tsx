@@ -1,65 +1,183 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import SearchBar from "@/components/search-bar";
+import Dashboard from "@/components/dashboard";
+import LoadingSkeleton from "@/components/loading-skeleton";
+import { Badge } from "@/components/ui/badge";
+import { Eye, Network, Sparkles, Zap, Github } from "lucide-react";
+
+interface RepoData {
+  meta: {
+    name: string;
+    fullName: string;
+    description: string | null;
+    language: string | null;
+    stars: number;
+    forks: number;
+    defaultBranch: string;
+  };
+  nodes: any[];
+  edges: any[];
+  fileContents: Record<string, string>;
+  erdDiagram: string;
+  logicFlows: Record<string, string>;
+  stats: {
+    totalFiles: number;
+    totalFolders: number;
+    parsedFiles: number;
+    apiEndpoints: number;
+    schemaFiles: number;
+  };
+}
 
 export default function Home() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [repoData, setRepoData] = useState<RepoData | null>(null);
+  const [repoUrl, setRepoUrl] = useState("");
+
+  const handleSubmit = async (url: string) => {
+    setLoading(true);
+    setError(null);
+    setRepoUrl(url);
+
+    try {
+      const res = await fetch("/api/github", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to analyze repository");
+      }
+
+      setRepoData(data);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Something went wrong";
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBack = () => {
+    setRepoData(null);
+    setRepoUrl("");
+    setError(null);
+  };
+
+  // ─── Dashboard View ──────────────────────────────────────────────
+  if (repoData) {
+    return (
+      <Dashboard
+        meta={repoData.meta}
+        nodes={repoData.nodes}
+        edges={repoData.edges}
+        fileContents={repoData.fileContents}
+        erdDiagram={repoData.erdDiagram}
+        logicFlows={repoData.logicFlows}
+        stats={repoData.stats}
+        repoUrl={`https://github.com/${repoData.meta.fullName}`}
+        onBack={handleBack}
+      />
+    );
+  }
+
+  // ─── Loading View ────────────────────────────────────────────────
+  if (loading) {
+    return <LoadingSkeleton />;
+  }
+
+  // ─── Hero View ───────────────────────────────────────────────────
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen flex flex-col">
+      {/* Nav */}
+      <nav className="h-14 border-b border-border/50 flex items-center px-6 backdrop-blur-md bg-background/30">
+        <div className="flex items-center gap-2.5">
+
+          <span className="font-bold text-lg tracking-tight">
+            Git<span className="text-[oklch(0.82_0.16_195)]">Schema</span>
+          </span>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
+        <div className="ml-auto flex items-center gap-3">
           <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://github.com"
             target="_blank"
             rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
+            <Github className="w-5 h-5" />
           </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <main className="flex-1 flex flex-col items-center justify-center px-6 pb-20">
+        <div className="text-center max-w-3xl mx-auto space-y-6 animate-fade-in-up">
+
+
+          {/* Title */}
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
+            See Your Code
+            <br />
+            <span className="bg-gradient-to-r from-[oklch(0.82_0.16_195)] via-[oklch(0.7_0.2_240)] to-[oklch(0.65_0.25_300)] bg-clip-text text-transparent">
+              Like Never Before
+            </span>
+          </h1>
+
+          {/* Subtitle */}
+          <p className="text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            Paste any public GitHub repository URL and instantly visualize its architecture,
+            file dependencies, and API flow in an interactive map.
+          </p>
+
+          {/* Search Bar */}
+          <div className="pt-4">
+            <SearchBar onSubmit={handleSubmit} loading={loading} />
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-4 py-3 rounded-lg text-sm animate-fade-in-up">
+              {error}
+            </div>
+          )}
         </div>
       </main>
+
+
+    </div>
+  );
+}
+
+function FeatureCard({
+  icon,
+  title,
+  description,
+  color,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  color: string;
+}) {
+  return (
+    <div
+      className="group p-4 rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm hover:border-border hover:bg-card/50 transition-all duration-300"
+      style={{ ["--feature-color" as string]: color }}
+    >
+      <div
+        className="w-10 h-10 rounded-lg flex items-center justify-center mb-3 transition-transform group-hover:scale-110"
+        style={{ backgroundColor: `color-mix(in oklch, ${color}, transparent 90%)`, color }}
+      >
+        {icon}
+      </div>
+      <h3 className="text-sm font-semibold mb-1">{title}</h3>
+      <p className="text-xs text-muted-foreground">{description}</p>
     </div>
   );
 }
