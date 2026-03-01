@@ -1,6 +1,6 @@
 # GitSchema
 
-A modern web application for visualizing and managing Git repository schemas with interactive graph visualization and GitHub integration.
+A modern web application for visualizing and managing Git repository schemas with interactive graph visualization and GitHub integration. https://gitschema.vercel.app
 
 ## 🖼 Screenshot
 ![Architecture Screenshot](https://github.com/ankurraj2003/GitSchema/blob/master/S2.png?raw=true)
