@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://gitschema.up.railway.app"),
+  metadataBase: new URL("https://gitschema.vercel.app"),
   title: {
     default: "GitSchema — Visualize Any GitHub Repository",
     template: "%s | GitSchema",
