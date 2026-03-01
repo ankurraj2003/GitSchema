@@ -104,16 +104,6 @@ export default function Home() {
             Git<span className="text-[oklch(0.82_0.16_195)]">Schema</span>
           </span>
         </div>
-        <div className="ml-auto flex items-center gap-3">
-          <a
-            href="https://github.com/ankurraj2003/GitSchema"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Github className="w-5 h-5" />
-          </a>
-        </div>
       </nav>
 
       {/* Hero */}
