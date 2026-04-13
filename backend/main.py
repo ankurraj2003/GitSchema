@@ -302,3 +302,10 @@ async def summarize(req: SummarizeRequest) -> dict:
 @app.get("/api/health")
 async def health():
     return {"status": "ok", "cache": get_cache_stats()}
+
+if __name__ == "__main__":
+    import uvicorn
+    # When deployed on Render/Railway, the PORT environment variable is automatically provided.
+    port = int(os.environ.get("PORT", 8000))
+    print(f"Starting server on port {port}")
+    uvicorn.run("main:app", host="0.0.0.0", port=port)

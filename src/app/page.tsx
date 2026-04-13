@@ -44,7 +44,10 @@ export default function Home() {
     setRepoUrl(url);
 
     try {
-      const res = await fetch("/api/github", {
+      const backendUrl = process.env.NEXT_PUBLIC_API_URL || "";
+      const endpoint = `${backendUrl.replace(/\/$/, '')}/api/github`;
+      
+      const res = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url }),
