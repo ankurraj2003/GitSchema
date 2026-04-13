@@ -32,7 +32,7 @@ function applyDagreLayout(nodes: Node[], edges: Edge[]): Node[] {
     const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
     g.setGraph({
-        rankdir: "LR",
+        rankdir: "LR", // explicit left-to-right
         nodesep: 60,
         ranksep: 200,
         edgesep: 30,
@@ -140,7 +140,7 @@ export default function ArchitectureMap({
             workEdges = workEdges.filter((e) => !folderIds.has(e.source) && !folderIds.has(e.target));
         }
 
-        // Apply dagre layout
+        // Apply dagre layout for horizontal left-to-right spread
         const laid = applyDagreLayout(workNodes, workEdges);
         return { displayNodes: laid, displayEdges: workEdges };
     }, [rawNodes, rawEdges, viewMode, showFolders]);
@@ -218,8 +218,8 @@ export default function ArchitectureMap({
                 onNodeClick={handleNodeClick}
                 nodeTypes={nodeTypes}
                 fitView
-                fitViewOptions={{ padding: 0.2, minZoom: 0.6, maxZoom: 1 }}
-                defaultViewport={{ x: 0, y: 0, zoom: 0.75 }}
+                fitViewOptions={{ padding: 0.2, minZoom: 1, maxZoom: 1.2 }}
+                defaultViewport={{ x: 0, y: 0, zoom: 1 }}
                 minZoom={0.05}
                 maxZoom={2}
                 proOptions={{ hideAttribution: true }}
