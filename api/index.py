@@ -12,14 +12,14 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from github_client import (
+from lib.github_client import (
     parse_github_url,
     fetch_repo_meta,
     fetch_repo_tree,
     fetch_file_content,
     detect_primary_language,
 )
-from code_parser import (
+from lib.code_parser import (
     tree_to_graph,
     build_dependency_edges,
     parse_imports,
@@ -32,14 +32,14 @@ from code_parser import (
     generate_architecture_mermaid,
     generate_sequence_mermaid,
 )
-from schema_parser import (
+from lib.schema_parser import (
     detect_schema_files,
     parse_prisma_schema,
     parse_sql_schema,
     entities_to_mermaid_erd,
 )
-from ai_module import summarize_file, explain_connection
-from cache_module import repo_cache, summary_cache, content_hash, get_cache_stats
+from lib.ai_module import summarize_file, explain_connection
+from lib.cache_module import repo_cache, summary_cache, content_hash, get_cache_stats
 
 # ─── App Setup ──────────────────────────────────────────────────────
 

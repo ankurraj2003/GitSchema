@@ -10,7 +10,7 @@ from typing import Optional
 
 import httpx
 
-from cache_module import file_cache, tree_cache
+from lib.cache_module import file_cache, tree_cache
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
 
