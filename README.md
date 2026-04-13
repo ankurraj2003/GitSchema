@@ -19,9 +19,8 @@ A modern web application for visualizing and managing Git repository schemas wit
 ## 📦 Tech Stack
 
 ### Core Framework
-- **Next.js** (16.1.6) - React framework with server-side rendering
-- **React** (19.2.3) - UI library
-- **React DOM** (19.2.3) - DOM rendering
+- **Next.js** (16.1.6) - React frontend
+- **FastAPI** - Python backend
 
 ### Visualization & Graphs
 - **@xyflow/react** (12.10.1) - Interactive flow diagrams
@@ -29,41 +28,33 @@ A modern web application for visualizing and managing Git repository schemas wit
 - **Mermaid** (11.12.3) - Diagramming and charting library
 - **Lucide React** (0.575.0) - Icon library
 
-### API & Data
-- **@octokit/rest** (22.0.1) - GitHub API client
-- **lru-cache** (11.2.6) - Caching utility
+### API & Analysis (Python)
+- **FastAPI** - Modern, high-performance web framework
+- **httpx** - Async HTTP client for GitHub API
+- **NetworkX** - Complex network analysis for dependencies
+- **AI Integration** - Automated code summarization and flow analysis
 
 ### UI & Styling
 - **Radix UI** (1.4.3) - Accessible component library
 - **Tailwind CSS** (4) - Utility-first CSS framework
 - **Shadcn/ui** (3.8.5) - High-quality React components
-- **class-variance-authority** (0.7.1) - Type-safe class composition
-- **clsx** (2.1.1) - Conditional className utility
-- **tailwind-merge** (3.5.0) - Merge Tailwind CSS classes
-
-### Development Tools
-- **TypeScript** (5) - Type safety
-- **ESLint** (9) - Code linting
-- **Babel React Compiler** (1.0.0) - React optimization
-- **PostCSS** (4) - CSS transformation
 
 ## 📁 File Structure
 
 ```
 GitSchema/
+├── api/                  # Python FastAPI backend (Vercel Functions)
+│   ├── index.py          # Main API entry point
+│   ├── requirements.txt  # Python dependencies
+│   └── ...               # Analysis & logic modules
 ├── src/
 │   ├── app/              # Next.js app directory and pages
 │   ├── components/       # Reusable React components
 │   └── lib/              # Utility functions and helpers
 ├── public/               # Static assets
-├── components.json       # Component configuration
+├── vercel.json           # Deployment configuration
 ├── next.config.ts        # Next.js configuration
-├── tsconfig.json         # TypeScript configuration
-├── tailwind.config.js    # Tailwind CSS configuration
-├── postcss.config.mjs    # PostCSS configuration
-├── eslint.config.mjs     # ESLint configuration
-├── package.json          # Project dependencies and scripts
-└── README.md             # This file
+└── package.json          # Node.js dependencies and scripts
 ```
 
 ## 🚀 Getting Started

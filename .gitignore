@@ -44,5 +44,11 @@ next-env.d.ts
 # python
 __pycache__/
 *.pyc
-backend/venv/
-backend/.env
+api/venv/
+api/.env
+venv/
+.venv/
+env/
+.env
+.env.local
+.env.*

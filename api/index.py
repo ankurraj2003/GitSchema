@@ -1,8 +1,3 @@
-"""
-GitSchema Backend — FastAPI application.
-Provides the same API endpoints as the original Next.js API routes.
-"""
-
 import os
 import time
 import asyncio
