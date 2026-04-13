@@ -19,7 +19,7 @@ from github_client import (
     fetch_file_content,
     detect_primary_language,
 )
-from parser import (
+from code_parser import (
     tree_to_graph,
     build_dependency_edges,
     parse_imports,
